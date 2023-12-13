@@ -8,4 +8,24 @@ public class Sphere extends PrimitiveObject {
         // ... (możesz użyć funkcji matematycznych do generowania współrzędnych sfery)
         super(color);
     }
+
+    @Override
+    public void draw() {
+
+    }
+
+    @Override
+    public void translate(float x, float y, float z) {
+
+    }
+
+    @Override
+    public void rotate(float angle, float axisX, float axisY, float axisZ) {
+
+    }
+
+    @Override
+    public void scale(float scaleX, float scaleY, float scaleZ) {
+
+    }
 }

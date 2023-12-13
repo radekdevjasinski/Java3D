@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 
-public class PrimitiveObject {
+public abstract class PrimitiveObject {
     private ModelInstance modelInstance;
 
     public PrimitiveObject(Model model, Color color) {
@@ -29,6 +29,14 @@ public class PrimitiveObject {
     public ModelInstance getModelInstance() {
         return modelInstance;
     }
+
+    public abstract void draw();
+
+    public abstract void translate(float x, float y, float z);
+
+    public abstract void rotate(float angle, float axisX, float axisY, float axisZ);
+
+    public abstract void scale(float scaleX, float scaleY, float scaleZ);
 }
 
 

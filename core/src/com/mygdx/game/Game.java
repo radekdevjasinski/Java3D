@@ -34,8 +34,48 @@ public class Game implements ApplicationListener {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 
         objects = new Array<>(); // Poprawka do inicjalizacji
-        objects.add(new PrimitiveObject(createCubeModel(), Color.RED));
-        objects.add(new PrimitiveObject(createSphereModel(), Color.BLUE));
+        objects.add(new PrimitiveObject(createCubeModel(), Color.RED) {
+            @Override
+            public void draw() {
+
+            }
+
+            @Override
+            public void translate(float x, float y, float z) {
+
+            }
+
+            @Override
+            public void rotate(float angle, float axisX, float axisY, float axisZ) {
+
+            }
+
+            @Override
+            public void scale(float scaleX, float scaleY, float scaleZ) {
+
+            }
+        });
+        objects.add(new PrimitiveObject(createSphereModel(), Color.BLUE) {
+            @Override
+            public void draw() {
+
+            }
+
+            @Override
+            public void translate(float x, float y, float z) {
+
+            }
+
+            @Override
+            public void rotate(float angle, float axisX, float axisY, float axisZ) {
+
+            }
+
+            @Override
+            public void scale(float scaleX, float scaleY, float scaleZ) {
+
+            }
+        });
     }
 
     @Override
