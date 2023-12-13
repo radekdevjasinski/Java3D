@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-
-
 public class Cube extends ModelInstance {
 
     public Cube(float size, Color color) {
@@ -45,7 +43,7 @@ public class Cube extends ModelInstance {
 
         modelBuilder.part("cube", mesh, GL20.GL_TRIANGLES, new Material());
 
-        modelBuilder.end();
+        //modelBuilder.end();
 
         return modelBuilder.end();
     }

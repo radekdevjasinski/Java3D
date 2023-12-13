@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 
 public class PrimitiveObject {
     private ModelInstance modelInstance;
-
+    public float velocity = 0;
     public PrimitiveObject(Model model, Color color) {
         modelInstance = new ModelInstance(model);
         Material material = modelInstance.materials.get(0);
@@ -30,5 +30,3 @@ public class PrimitiveObject {
         return modelInstance;
     }
 }
-
-
