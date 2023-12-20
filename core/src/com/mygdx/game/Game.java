@@ -33,7 +33,7 @@ public class Game implements ApplicationListener {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 
-        objects = new Array<>(); // Poprawka do inicjalizacji
+        objects = new Array<>();
         objects.add(new PrimitiveObject(createCubeModel(), Color.RED) {
             @Override
             public void draw() {
@@ -123,5 +123,5 @@ public class Game implements ApplicationListener {
         return modelBuilder.createSphere(0.5f, 0.5f, 0.5f, 20, 20, new Material(), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
     }
 
-    // Pozostałe metody interfejsu ApplicationListener (resize, pause, resume) mogą pozostać puste.
+
 }

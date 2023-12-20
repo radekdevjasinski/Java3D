@@ -3,7 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-
 public class MeshObject extends GameObject implements Renderable {
     private static ModelInstance modelInstance;
     private Mesh mesh;

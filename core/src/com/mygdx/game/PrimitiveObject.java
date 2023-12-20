@@ -23,7 +23,6 @@ public abstract class PrimitiveObject {
     }
 
     public void dispose() {
-        // Dispose resources if needed
     }
 
     public ModelInstance getModelInstance() {

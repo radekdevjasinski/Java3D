@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-
 public abstract class GameObject {
     protected String name;
     protected Vector3 position;

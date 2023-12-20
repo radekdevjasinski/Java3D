@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
+
 public class SphereObject extends PrimitiveObject {
     private float radius;
     private Vector3 position;
