@@ -66,8 +66,6 @@ public class Engine extends ApplicationAdapter {
 		for (PrimitiveObject object : objects) {
 			modelBatch.render(object.getModelInstance(), environment);
 			handleInput(object);
-			if (object.velocity > 0)
-				object.velocity -= 0.1F;
 		}
 		modelBatch.end();
 	}
@@ -76,22 +74,18 @@ public class Engine extends ApplicationAdapter {
 		float delta = Gdx.graphics.getDeltaTime();
 
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			object.velocity += rotationSpeed;
+			object.getModelInstance().transform.rotate(Vector3.Y, rotationSpeed * delta);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			object.velocity += rotationSpeed;
+			object.getModelInstance().transform.rotate(Vector3.Y, -rotationSpeed * delta);
 		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			object.velocity += rotationSpeed;
+			object.getModelInstance().transform.rotate(Vector3.X, rotationSpeed * delta);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			object.velocity += rotationSpeed;
-
+			object.getModelInstance().transform.rotate(Vector3.X, -rotationSpeed * delta);
 		}
-		object.getModelInstance().transform.rotate(Vector3.Y, object.velocity * delta);
-		object.getModelInstance().transform.rotate(Vector3.Y, -object.velocity * delta);
-		object.getModelInstance().transform.rotate(Vector3.X, object.velocity * delta);
-		object.getModelInstance().transform.rotate(Vector3.X, -object.velocity * delta);
 	}
 
 	@Override
