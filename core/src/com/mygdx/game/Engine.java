@@ -10,17 +10,22 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+
 
 public class Engine extends ApplicationAdapter {
 	private PerspectiveCamera camera;
 	private ModelBatch modelBatch;
 	private Environment environment;
 	private Array<PrimitiveObject> objects;
+	private PointLight pointLight;
+	private Vector3 lightPosition;
 	public final float rotationSpeed = 90f; // Prędkość rotacji w stopniach na sekundę
+	public final float lightSpeed = 30f;
 
 	@Override
 	public void create() {
@@ -30,11 +35,18 @@ public class Engine extends ApplicationAdapter {
 		camera.near = 1f;
 		camera.far = 300f;
 
+
+
 		modelBatch = new ModelBatch();
 
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.1f, 0.1f, 0.1f, 1f));
+		//environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+		lightPosition = new Vector3(0, 0, 0);
+		pointLight = new PointLight();
+		pointLight.set(Color.WHITE, lightPosition, 50f);
+		environment.add(pointLight);
 
 		objects = new Array<>();
 		objects.add(new PrimitiveObject(createCubeModel(), Color.RED));
@@ -68,7 +80,37 @@ public class Engine extends ApplicationAdapter {
 			handleInput(object);
 		}
 		modelBatch.end();
+		handleLightInput();
 	}
+
+	private void handleLightInput() {
+		float delta = Gdx.graphics.getDeltaTime();
+
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			lightPosition.add(0, 0, 1 * delta * lightSpeed);
+			lightPosition.y = 0;
+			lightPosition.x = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+			lightPosition.add(0, 0, -1 * delta * lightSpeed);
+			lightPosition.y = 0;
+			lightPosition.x = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			lightPosition.add(-1 * delta * lightSpeed, 0, 0);
+			lightPosition.y = 0;
+			lightPosition.z = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			lightPosition.add(1 * delta * lightSpeed, 0, 0);
+			lightPosition.y = 0;
+			lightPosition.z = 0;
+		}
+
+		pointLight.setPosition(lightPosition);
+	}
+
+
 
 	private void handleInput(PrimitiveObject object) {
 		float delta = Gdx.graphics.getDeltaTime();
