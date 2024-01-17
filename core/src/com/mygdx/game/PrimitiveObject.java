@@ -10,8 +10,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 
 public class PrimitiveObject {
-    private ModelInstance modelInstance;
-    public float velocity = 0;
+    private final ModelInstance modelInstance;
     public PrimitiveObject(Model model, Color color) {
         modelInstance = new ModelInstance(model);
         Material material = modelInstance.materials.get(0);
@@ -24,16 +23,6 @@ public class PrimitiveObject {
         material.set(TextureAttribute.createDiffuse(texture));
     }
 
-    public PrimitiveObject(float[] floats, short[] shorts, java.awt.Color color, ModelInstance modelInstance) {
-        this.modelInstance = modelInstance;
-    }
-
-    public PrimitiveObject(java.awt.Color color) {
-    }
-
-    public void dispose() {
-        // Dispose resources if needed
-    }
 
     public ModelInstance getModelInstance() {
         return modelInstance;

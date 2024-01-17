@@ -43,79 +43,36 @@ public class Engine extends ApplicationAdapter {
 		modelBatch = new ModelBatch();
 
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.1f, 0.1f, 0.1f, 1f));
-		//environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
-		//environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 
 		lightPosition = new Vector3(0, 0, 0);
 		pointLight = new PointLight();
-		pointLight.set(Color.WHITE, lightPosition, 50f);
+		pointLight.set(Color.WHITE, lightPosition, 100f);
 		environment.add(pointLight);
 
 		Texture sphereTexture = new Texture(Gdx.files.internal("heh.png"));
 		Texture cubeTexture = new Texture(Gdx.files.internal("toy.jpeg"));
+		Texture coneTexture = new Texture(Gdx.files.internal("maxwell.png"));
 		objects = new Array<>();
-		objects.add(new PrimitiveObject(createCubeModel(cubeTexture), cubeTexture));
-		objects.add(new PrimitiveObject(createSphereModel(sphereTexture), sphereTexture));
-		//objects.add(new PrimitiveObject(createSphereModel(), sphereTexture));
-		//objects.add(new PrimitiveObject(createSphereModel(), Color.GREEN));
-
-		objects.get(0).getModelInstance().transform.set(new Vector3(-3,0,3), new Quaternion());
-		objects.get(1).getModelInstance().transform.set(new Vector3(3,0,-3), new Quaternion());
-
-	}
-
-	private Model createCubeModel() {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		return modelBuilder.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.BLUE)), Usage.Position | Usage.Normal);
-	}
-	private Model createCubeModel(Texture texture) {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		Material material = new Material(TextureAttribute.createDiffuse(texture));
-		return modelBuilder.createBox(5f, 5f, 5f, material, Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-	}
-
-	private Model createSphereModel() {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		return modelBuilder.createSphere(7f, 7f, 7f, 20, 20, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position | Usage.Normal);
-	}
-	private Model createSphereModel(Texture texture) {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		Material material = new Material(TextureAttribute.createDiffuse(texture));
-		return modelBuilder.createSphere(7f, 7f, 7f, 20, 20, material, Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-	}
-
-
-	private Model createIrregularShapeModel(Color color) {
-		ModelBuilder modelBuilder = new ModelBuilder();
+		objects.add(new PrimitiveObject(ModelCreator.createCubeModel(cubeTexture), cubeTexture));
+		objects.add(new PrimitiveObject(ModelCreator.createSphereModel(sphereTexture), sphereTexture));
+		Model modelJoin1 = ModelCreator.createConeModel(Color.BLUE);
+		Model modelJoin2 = ModelCreator.createCylinderModel(Color.WHITE);
 		List<Model> models = new ArrayList<>();
-/*
-		// Tworzenie sześcianu
-		modelBuilder.begin();
-		MeshPartBuilder partBuilder = modelBuilder.part("box", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(color)));
-		partBuilder.box(4f, 4f, 4f);
-		models.add(modelBuilder.end());
-*/
-		// Tworzenie stożka
-		modelBuilder.begin();
-		MeshPartBuilder partBuilder = modelBuilder.part("cone", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(color)));
-		partBuilder.cone(5f, 10f, 5f, 10);
-		models.add(modelBuilder.end());
+		models.add(modelJoin1); models.add(modelJoin2);
 
-		models.add(createCubeModel());
+		objects.add(new PrimitiveObject(ModelCreator.createIrregularShapeModel(models),Color.BLUE));
+		objects.add(new PrimitiveObject(ModelCreator.createPlaneModel(Color.GOLD), Color.GOLD));
 
-		// Łączenie modeli
-		Model finalModel = new Model();
-		for(Model model : models)
-		{
-			finalModel.nodes.addAll(model.nodes);
-			finalModel.meshes.addAll(model.meshes);
-			finalModel.materials.addAll(model.materials);
+		objects.add(new PrimitiveObject(ModelCreator.createConeModel(coneTexture), coneTexture));
 
-		}
-		return finalModel;
+		objects.get(4).getModelInstance().transform.set(new Vector3(-14,0,14), new Quaternion());
+		objects.get(0).getModelInstance().transform.set(new Vector3(-7,0,7), new Quaternion());
+		objects.get(1).getModelInstance().transform.set(new Vector3(0,0,0), new Quaternion());
+		objects.get(2).getModelInstance().transform.set(new Vector3(7,0,-7), new Quaternion());
+		objects.get(3).getModelInstance().transform.set(new Vector3(14,0,-14), new Quaternion());
+
 	}
-
 
 	@Override
 	public void render() {
@@ -158,10 +115,6 @@ public class Engine extends ApplicationAdapter {
 		pointLight.setPosition(lightPosition);
 	}
 
-
-
-
-
 	private void handleInput(PrimitiveObject object) {
 		float delta = Gdx.graphics.getDeltaTime();
 
@@ -183,8 +136,5 @@ public class Engine extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		modelBatch.dispose();
-		for (PrimitiveObject object : objects) {
-			object.dispose();
-		}
 	}
 }
