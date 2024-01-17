@@ -21,20 +21,6 @@ public class Cube extends ModelInstance {
 
         int attr = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.ColorPacked;
 
-        // Define vertices
-        float[] vertices = {
-                -size / 2f, -size / 2f, -size / 2f, 0, 0, -1, Color.toFloatBits(color.r, color.g, color.b, color.a),
-                size / 2f, -size / 2f, -size / 2f, 0, 0, -1, Color.toFloatBits(color.r, color.g, color.b, color.a),
-                size / 2f, size / 2f, -size / 2f, 0, 0, -1, Color.toFloatBits(color.r, color.g, color.b, color.a),
-                -size / 2f, size / 2f, -size / 2f, 0, 0, -1, Color.toFloatBits(color.r, color.g, color.b, color.a),
-
-        };
-
-        // Define indices
-        short[] indices = {
-                0, 1, 2, 2, 3, 0,
-        };
-
         MeshBuilder meshBuilder = new MeshBuilder();
         meshBuilder.begin(attr, GL20.GL_TRIANGLES);
         meshBuilder.part("cube", GL20.GL_TRIANGLES);
@@ -43,7 +29,6 @@ public class Cube extends ModelInstance {
 
         modelBuilder.part("cube", mesh, GL20.GL_TRIANGLES, new Material());
 
-        //modelBuilder.end();
 
         return modelBuilder.end();
     }

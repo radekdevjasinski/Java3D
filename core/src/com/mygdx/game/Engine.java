@@ -12,12 +12,15 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Engine extends ApplicationAdapter {
 	private PerspectiveCamera camera;
@@ -31,59 +34,45 @@ public class Engine extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(100, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(10f, 10f, 10f);
 		camera.lookAt(0, 0, 0);
 		camera.near = 1f;
 		camera.far = 300f;
 
-
-
 		modelBatch = new ModelBatch();
 
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.1f, 0.1f, 0.1f, 1f));
-		//environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
-		//environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 
 		lightPosition = new Vector3(0, 0, 0);
 		pointLight = new PointLight();
-		pointLight.set(Color.WHITE, lightPosition, 50f);
+		pointLight.set(Color.WHITE, lightPosition, 100f);
 		environment.add(pointLight);
 
 		Texture sphereTexture = new Texture(Gdx.files.internal("heh.png"));
 		Texture cubeTexture = new Texture(Gdx.files.internal("toy.jpeg"));
+		Texture coneTexture = new Texture(Gdx.files.internal("maxwell.png"));
 		objects = new Array<>();
-		objects.add(new PrimitiveObject(createCubeModel(cubeTexture), cubeTexture));
-		objects.add(new PrimitiveObject(createSphereModel(sphereTexture), sphereTexture));
-		//objects.add(new PrimitiveObject(createSphereModel(), sphereTexture));
-		//objects.add(new PrimitiveObject(createSphereModel(), Color.GREEN));
+		objects.add(new PrimitiveObject(ModelCreator.createCubeModel(cubeTexture), cubeTexture));
+		objects.add(new PrimitiveObject(ModelCreator.createSphereModel(sphereTexture), sphereTexture));
+		Model modelJoin1 = ModelCreator.createConeModel(Color.BLUE);
+		Model modelJoin2 = ModelCreator.createCylinderModel(Color.WHITE);
+		List<Model> models = new ArrayList<>();
+		models.add(modelJoin1); models.add(modelJoin2);
 
-		objects.get(0).getModelInstance().transform.set(new Vector3(-3,0,3), new Quaternion());
-		objects.get(1).getModelInstance().transform.set(new Vector3(3,0,-3), new Quaternion());
+		objects.add(new PrimitiveObject(ModelCreator.createIrregularShapeModel(models),Color.BLUE));
+		objects.add(new PrimitiveObject(ModelCreator.createPlaneModel(Color.GOLD), Color.GOLD));
+
+		objects.add(new PrimitiveObject(ModelCreator.createConeModel(coneTexture), coneTexture));
+
+		objects.get(4).getModelInstance().transform.set(new Vector3(-14,0,14), new Quaternion());
+		objects.get(0).getModelInstance().transform.set(new Vector3(-7,0,7), new Quaternion());
+		objects.get(1).getModelInstance().transform.set(new Vector3(0,0,0), new Quaternion());
+		objects.get(2).getModelInstance().transform.set(new Vector3(7,0,-7), new Quaternion());
+		objects.get(3).getModelInstance().transform.set(new Vector3(14,0,-14), new Quaternion());
 
 	}
-
-	private Model createCubeModel() {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		return modelBuilder.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.BLUE)), Usage.Position | Usage.Normal);
-	}
-	private Model createCubeModel(Texture texture) {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		Material material = new Material(TextureAttribute.createDiffuse(texture));
-		return modelBuilder.createBox(5f, 5f, 5f, material, Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-	}
-
-	private Model createSphereModel() {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		return modelBuilder.createSphere(7f, 7f, 7f, 20, 20, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position | Usage.Normal);
-	}
-	private Model createSphereModel(Texture texture) {
-		ModelBuilder modelBuilder = new ModelBuilder();
-		Material material = new Material(TextureAttribute.createDiffuse(texture));
-		return modelBuilder.createSphere(7f, 7f, 7f, 20, 20, material, Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-	}
-
 
 	@Override
 	public void render() {
@@ -126,10 +115,6 @@ public class Engine extends ApplicationAdapter {
 		pointLight.setPosition(lightPosition);
 	}
 
-
-
-
-
 	private void handleInput(PrimitiveObject object) {
 		float delta = Gdx.graphics.getDeltaTime();
 
@@ -151,8 +136,5 @@ public class Engine extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		modelBatch.dispose();
-		for (PrimitiveObject object : objects) {
-			object.dispose();
-		}
 	}
 }
